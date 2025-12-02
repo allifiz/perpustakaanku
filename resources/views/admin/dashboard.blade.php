@@ -1,3 +1,4 @@
+
 {{-- resources/views/admin/dashboard.blade.php --}}
 @extends('layouts.admin')
 
@@ -17,7 +18,7 @@
             <div class="icon-wrapper">
                 <i class="fas fa-users"></i>
             </div>
-            <div class="card-title">Total Members</div>
+            <div class="card-title-light">Total Members</div>
             <h3>{{ \App\Models\User::where('role', 'member')->count() }}</h3>
         </div>
     </div>
@@ -27,7 +28,7 @@
             <div class="icon-wrapper">
                 <i class="fas fa-book"></i>
             </div>
-            <div class="card-title">Total Books</div>
+            <div class="card-title-light">Total Books</div>
             <h3>{{ \App\Models\Book::count() }}</h3>
         </div>
     </div>
@@ -37,7 +38,7 @@
             <div class="icon-wrapper">
                 <i class="fas fa-clock"></i>
             </div>
-            <div class="card-title">Pending Borrowings</div>
+            <div class="card-title-light">Pending Borrowings</div>
             <h3>{{ \App\Models\Borrowing::where('status', 'pending')->count() }}</h3>
         </div>
     </div>
@@ -47,10 +48,21 @@
             <div class="icon-wrapper">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <div class="card-title">Active Borrowings</div>
+            <div class="card-title-light">Active Borrowings</div>
             <h3>{{ \App\Models\Borrowing::where('status', 'approved')->count() }}</h3>
         </div>
     </div>
+    <div class="col-md-3 mb-4">
+    <div class="stats-card bg-dark text-white">
+        <div class="icon-wrapper">
+            <i class="fas fa-eye"></i>
+        </div>
+        <div class="card-title-light">Visitors Today</div>
+        <h3>{{ $todayVisitors }}</h3>
+        <small>{{ $onlineNow }} online • {{ $todayHits }} hits</small>
+    </div>
+</div>
+
 </div>
 
 <div class="row">

@@ -38,13 +38,13 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.borrowings.index') }}" class="{{ request()->routeIs('admin.borrowings.index') ? 'active' : '' }}">
+                <a href="{{ route('admin.peminjaman.index') }}" class="{{ request()->routeIs('admin.peminjaman.index') ? 'active' : '' }}">
                     <i class="fas fa-exchange-alt"></i>
                     <span>Borrowings</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.borrowings.history') }}" class="{{ request()->routeIs('admin.borrowings.history') ? 'active' : '' }}">
+                <a href="{{ route('admin.peminjaman.history') }}" class="{{ request()->routeIs('admin.peminjaman.history') ? 'active' : '' }}">
                     <i class="fas fa-history"></i>
                     <span>History</span>
                 </a>

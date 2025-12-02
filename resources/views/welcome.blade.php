@@ -15,7 +15,7 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    <i class="fas fa-book me-2"></i>Perpustakaan Digital
+                    <i class="fas fa-book me-2"></i>Perpustakaan umum garut
                 </a>
                 
                 <div class="d-flex align-items-center">
@@ -75,7 +75,7 @@
         
         <div class="container">
             <div class="hero-content">
-                <h1>Selamat Datang di Perpustakaan Digital</h1>
+                <h1>Sistem informasi Perpustakaan umum garut</h1>
                 <p>Sistem manajemen perpustakaan modern yang memudahkan Anda meminjam dan mengelola buku secara efisien dengan pengalaman terbaik.</p>
                 <div class="hero-buttons">
                     @auth

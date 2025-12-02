@@ -8,7 +8,7 @@
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
             <h1><i class="fas fa-exchange-alt"></i> Manage Borrowings</h1>
-            <a href="{{ route('admin.borrowings.create') }}" class="btn btn-primary">
+            <a href="{{ route('admin.peminjaman.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> New Borrowing
             </a>
         </div>
@@ -20,26 +20,31 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form method="GET" action="{{ route('admin.borrowings.index') }}">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <input type="text" name="search" class="form-control" placeholder="Search by member or book" 
-                                   value="{{ request('search') }}">
-                        </div>
-                        <div class="col-md-2">
-                            <select name="status" class="form-control">
-                                <option value="">All Status</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                                <option value="returned" {{ request('status') == 'returned' ? 'selected' : '' }}>Returned</option>
-                                <option value="overdue" {{ request('status') == 'overdue' ? 'selected' : '' }}>Overdue</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Filter</button>
-                        </div>
-                    </div>
-                </form>
+<form method="GET" action="{{ route('admin.peminjaman.index') }}">
+  <div class="row g-2">
+    {{-- Date range (dipakai utk borrow_date ATAU due_date) --}}
+    <div class="col-md-2">
+      <input type="date" name="from" class="form-control" value="{{ request('from') }}">
+    </div>
+    <div class="col-md-2">
+      <input type="date" name="to" class="form-control" value="{{ request('to') }}">
+    </div>
+
+      {{-- Export PDF pakai GET + bawa semua parameter --}}
+      <div class="col-md-2">
+      <button type="submit"
+              formaction="{{ route('admin.peminjaman.export.pdf') }}"
+              formmethod="GET"
+              class="btn btn-outline-danger w-100">
+        <i class="fas fa-file-pdf"></i> Export PDF
+      </button>
+      </div>
+
+    </div>
+  </div>
+</form>
+
+
             </div>
         </div>
     </div>
@@ -82,7 +87,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         @if($borrowing->status == 'pending')
-                                            <form action="{{ route('admin.borrowings.approve', $borrowing) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('admin.peminjaman.approve', $borrowing) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-success btn-sm" 
                                                         onclick="return confirm('Approve this borrowing request?')">
@@ -90,7 +95,7 @@
                                                 </button>
                                             </form>
                                         @elseif($borrowing->status == 'approved')
-                                            <form action="{{ route('admin.borrowings.return', $borrowing) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('admin.peminjaman.return', $borrowing) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-info btn-sm" 
                                                         onclick="return confirm('Mark this book as returned?')">
@@ -99,7 +104,7 @@
                                             </form>
                                         @endif
                                         
-                                        <form action="{{ route('admin.borrowings.destroy', $borrowing) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.peminjaman.destroy', $borrowing) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" 
@@ -120,7 +125,7 @@
                 </div>
                 
                 <div class="mt-3">
-                    {{ $borrowings->links() }}
+                    {{ $borrowings->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>

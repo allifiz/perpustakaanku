@@ -19,12 +19,24 @@ class BorrowingController extends Controller
         return view('member.borrowings.index', compact('borrowings'));
     }
 
-    public function create()
+     public function create(Request $request)
     {
-        $books = Book::where('available_copies', '>', 0)->where('status', 'available')->get();
-        return view('member.borrowings.create', compact('books'));
-    }
+        $q = trim($request->input('q', ''));
 
+        // WAJIB paginate(), jangan get()
+        $bookList = Book::query()
+            ->when($q !== '', function ($qr) use ($q) {
+                $qr->where(function ($w) use ($q) {
+                    $w->where('title', 'like', "%{$q}%")
+                      ->orWhere('author', 'like', "%{$q}%");
+                });
+            })
+            ->orderBy('title')
+            ->paginate(12)                         // <-- paginate
+            ->appends($request->query());          // bawa ?q= ke pagination
+
+        return view('member.borrowings.create', compact('bookList', 'q'));
+    }
     public function store(Request $request)
     {
         $request->validate([

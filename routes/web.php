@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\BorrowingController as AdminBorrowingController;
 use App\Http\Controllers\Member\BorrowingController as MemberBorrowingController;
 use App\Http\Controllers\Member\ProfileController;
+use Illuminate\Support\Facades\DB;
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -17,11 +18,25 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
+
 // Admin Routes
 // routes/web.php
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+        $todayVisitors = DB::table('visits')
+            ->whereDate('visited_at', today())
+            ->count();
+
+        $onlineNow = DB::table('visits')
+            ->whereDate('visited_at', today())
+            ->where('last_seen_at', '>=', now()->subMinutes(5))
+            ->count();
+
+        $todayHits = DB::table('visits')
+            ->whereDate('visited_at', today())
+            ->sum('hits');
+
+        return view('admin.dashboard', compact('todayVisitors', 'onlineNow', 'todayHits'));
     })->name('dashboard');
 
     // Member Management
@@ -31,9 +46,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Book Management
     Route::resource('books', BookController::class);
 
-    // Borrowing Management - Pisahkan route history
-    Route::get('/borrowings/history', [AdminBorrowingController::class, 'history'])->name('borrowings.history');
-    Route::resource('borrowings', AdminBorrowingController::class)->except(['show']);
+    // Borrowing Management
+    Route::prefix('peminjaman')->name('peminjaman.')->group(function () {
+        Route::get('/', [AdminBorrowingController::class, 'index'])->name('index');
+        Route::get('/create', [AdminBorrowingController::class, 'create'])->name('create');
+        Route::post('/', [AdminBorrowingController::class, 'store'])->name('store');
+        Route::get('/history', [AdminBorrowingController::class, 'history'])->name('history');
+        Route::post('/{borrowing}/approve', [AdminBorrowingController::class, 'approve'])->name('approve');
+        Route::post('/{borrowing}/return', [AdminBorrowingController::class, 'returnBook'])->name('return');
+        Route::delete('/{borrowing}', [AdminBorrowingController::class, 'destroy'])->name('destroy');
+        Route::get('/export/pdf', [AdminBorrowingController::class, 'exportPdf'])->name('export.pdf');
+    });
 });
 
 // Member Routes
@@ -52,7 +75,7 @@ Route::middleware(['auth', 'member'])->prefix('member')->name('member.')->group(
     Route::get('/borrowings/history', [MemberBorrowingController::class, 'history'])->name('borrowings.history');
 });
 
-// Home Route
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
+})->middleware('track') // <-- pasang di sini
+  ->name('home');

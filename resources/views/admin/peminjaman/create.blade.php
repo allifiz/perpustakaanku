@@ -10,7 +10,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.borrowings.index') }}">Borrowings</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.peminjaman.index') }}">Borrowings</a></li>
                 <li class="breadcrumb-item active">New</li>
             </ol>
         </nav>
@@ -22,7 +22,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form method="POST" action="{{ route('admin.borrowings.store') }}">
+                <form method="POST" action="{{ route('admin.peminjaman.store') }}">
                     @csrf
                     
                     <div class="row">
@@ -83,7 +83,7 @@
                     </div>
                     
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('admin.borrowings.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.peminjaman.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
                         <button type="submit" class="btn btn-primary">

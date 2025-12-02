@@ -15,7 +15,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form method="GET" action="{{ route('admin.borrowings.history') }}">
+                <form method="GET" action="{{ route('admin.peminjaman.history') }}">
                     <div class="row">
                         <div class="col-md-3">
                             <input type="text" name="search" class="form-control" placeholder="Search by member or book" 
