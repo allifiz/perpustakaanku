@@ -7,8 +7,12 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\BorrowingController as AdminBorrowingController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PublisherController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Member\BorrowingController as MemberBorrowingController;
 use App\Http\Controllers\Member\ProfileController;
+use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\DB;
 
 // Authentication Routes
@@ -18,25 +22,46 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
+// Public Catalog (OPAC)
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/catalog/{book}', [CatalogController::class, 'show'])->name('catalog.show');
+Route::post('/catalog/{book}/reserve', [CatalogController::class, 'reserve'])->name('catalog.reserve')->middleware('auth');
+
 
 // Admin Routes
 // routes/web.php
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
-        $todayVisitors = DB::table('visits')
-            ->whereDate('visited_at', today())
-            ->count();
+        $totalBooks = \App\Models\Book::count();
+        $totalMembers = \App\Models\User::where('role', 'member')->count();
+        $activeLoans = \App\Models\Borrowing::whereIn('status', ['pending', 'approved'])->count();
+        $overdueLoans = \App\Models\Borrowing::overdue()->count();
+        $availableBooks = \App\Models\Book::where('available_copies', '>', 0)->count();
+        $totalCategories = \App\Models\Category::count();
+        
+        // Recent activities
+        $recentBorrowings = \App\Models\Borrowing::with(['user', 'book'])
+            ->latest()
+            ->limit(5)
+            ->get();
+        
+        $popularBooks = \App\Models\Book::withCount('borrowings')
+            ->orderBy('borrowings_count', 'desc')
+            ->limit(5)
+            ->get();
+        
+        $activeMembers = \App\Models\User::where('role', 'member')
+            ->where('status', 'active')
+            ->withCount('borrowings')
+            ->orderBy('borrowings_count', 'desc')
+            ->limit(5)
+            ->get();
 
-        $onlineNow = DB::table('visits')
-            ->whereDate('visited_at', today())
-            ->where('last_seen_at', '>=', now()->subMinutes(5))
-            ->count();
-
-        $todayHits = DB::table('visits')
-            ->whereDate('visited_at', today())
-            ->sum('hits');
-
-        return view('admin.dashboard', compact('todayVisitors', 'onlineNow', 'todayHits'));
+        return view('admin.dashboard', compact(
+            'totalBooks', 'totalMembers', 'activeLoans', 'overdueLoans',
+            'availableBooks', 'totalCategories', 'recentBorrowings', 
+            'popularBooks', 'activeMembers'
+        ));
     })->name('dashboard');
 
     // Member Management
@@ -45,6 +70,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Book Management
     Route::resource('books', BookController::class);
+
+    // Master Data Management
+    Route::resource('categories', CategoryController::class);
+    Route::resource('publishers', PublisherController::class);
+    Route::resource('locations', LocationController::class);
 
     // Borrowing Management
     Route::prefix('peminjaman')->name('peminjaman.')->group(function () {

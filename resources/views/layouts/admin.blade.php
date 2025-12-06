@@ -38,6 +38,24 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                    <i class="fas fa-tags"></i>
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.publishers.index') }}" class="{{ request()->routeIs('admin.publishers.*') ? 'active' : '' }}">
+                    <i class="fas fa-building"></i>
+                    <span>Publishers</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.locations.index') }}" class="{{ request()->routeIs('admin.locations.*') ? 'active' : '' }}">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Locations</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('admin.peminjaman.index') }}" class="{{ request()->routeIs('admin.peminjaman.index') ? 'active' : '' }}">
                     <i class="fas fa-exchange-alt"></i>
                     <span>Borrowings</span>

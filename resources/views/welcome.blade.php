@@ -25,6 +25,11 @@
                                 <i class="fas fa-home me-1"></i>Home
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('catalog.*') ? 'active' : '' }}" href="{{ route('catalog.index') }}">
+                                <i class="fas fa-book-open me-1"></i>Catalog
+                            </a>
+                        </li>
                         @auth
                             @if(auth()->user()->isAdmin())
                                 <li class="nav-item">
