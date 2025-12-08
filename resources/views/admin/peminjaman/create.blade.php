@@ -9,7 +9,7 @@
         <h1><i class="fas fa-plus"></i> New Borrowing</h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dasbor') }}">Dashboard</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.peminjaman.index') }}">Borrowings</a></li>
                 <li class="breadcrumb-item active">New</li>
             </ol>

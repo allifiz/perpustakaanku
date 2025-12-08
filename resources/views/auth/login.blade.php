@@ -36,7 +36,7 @@
             @csrf
 
             <div class="form-group">
-                <label for="email" class="form-label">Email Address</label>
+                <label for="email" class="form-label">Alamat Email</label>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
                        name="email" value="{{ old('email') }}" required autocomplete="email" autofocus 
                        placeholder="Masukkan email Anda">
@@ -46,7 +46,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label">Kata Sandi</label>
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
                        name="password" required autocomplete="current-password" 
                        placeholder="Masukkan password Anda">

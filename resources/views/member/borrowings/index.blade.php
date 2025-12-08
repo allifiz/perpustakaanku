@@ -1,6 +1,6 @@
 @extends('layouts.member')
 
-@section('title', 'My Books - Digital Library')
+@section('title', 'Buku Saya - Perpustakaan Digital')
 
 @section('content')
 <!-- Page Header -->
@@ -10,12 +10,12 @@
             <div>
                 <h2 class="fw-bold mb-1">
                     <i class="fas fa-bookmark me-2" style="color: var(--primary-color);"></i>
-                    My Books
+                    Buku Saya
                 </h2>
-                <p class="text-muted mb-0">Manage your borrowed books</p>
+                <p class="text-muted mb-0">Kelola buku yang Anda pinjam</p>
             </div>
             <a href="{{ route('catalog.index') }}" class="btn btn-primary-modern btn-modern">
-                <i class="fas fa-plus-circle me-2"></i>Borrow New Book
+                <i class="fas fa-plus-circle me-2"></i>Pinjam Buku Baru
             </a>
         </div>
     </div>
@@ -27,17 +27,17 @@
         <ul class="nav nav-pills" style="background: white; padding: 0.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
             <li class="nav-item">
                 <a class="nav-link active" href="#active" data-bs-toggle="pill" style="border-radius: 8px; font-weight: 500;">
-                    <i class="fas fa-book-open me-2"></i>Active ({{ $borrowings->where('status', 'approved')->count() }})
+                    <i class="fas fa-book-open me-2"></i>Aktif ({{ $borrowings->where('status', 'approved')->count() }})
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#pending" data-bs-toggle="pill" style="border-radius: 8px; font-weight: 500;">
-                    <i class="fas fa-clock me-2"></i>Pending ({{ $borrowings->where('status', 'pending')->count() }})
+                    <i class="fas fa-clock me-2"></i>Menunggu ({{ $borrowings->where('status', 'pending')->count() }})
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#returned" data-bs-toggle="pill" style="border-radius: 8px; font-weight: 500;">
-                    <i class="fas fa-check-circle me-2"></i>Returned ({{ $borrowings->where('status', 'returned')->count() }})
+                    <i class="fas fa-check-circle me-2"></i>Dikembalikan ({{ $borrowings->where('status', 'returned')->count() }})
                 </a>
             </li>
         </ul>
@@ -76,19 +76,19 @@
                                         <div class="d-flex gap-2 mb-2">
                                             <span class="badge badge-modern bg-primary">
                                                 <i class="fas fa-calendar me-1"></i>
-                                                Borrowed: {{ $borrowing->borrow_date->format('d M Y') }}
+                                                Dipinjam: {{ $borrowing->borrow_date->format('d M Y') }}
                                             </span>
                                         </div>
                                         <div class="d-flex gap-2 align-items-center">
                                             @if($borrowing->isOverdue())
                                                 <span class="badge badge-modern bg-danger">
                                                     <i class="fas fa-exclamation-triangle me-1"></i>
-                                                    Overdue since {{ $borrowing->due_date->format('d M Y') }}
+                                                    Terlambat sejak {{ $borrowing->due_date->format('d M Y') }}
                                                 </span>
                                             @else
                                                 <span class="badge badge-modern bg-success">
                                                     <i class="fas fa-clock me-1"></i>
-                                                    Due: {{ $borrowing->due_date->format('d M Y') }}
+                                                    Jatuh Tempo: {{ $borrowing->due_date->format('d M Y') }}
                                                 </span>
                                                 <small class="text-muted">
                                                     ({{ $borrowing->due_date->diffForHumans() }})
@@ -105,7 +105,7 @@
                                     @endphp
                                     <div class="mb-2">
                                         <div class="d-flex justify-content-between small mb-1">
-                                            <span class="text-muted">Loan Period Progress</span>
+                                            <span class="text-muted">Progress Periode Pinjam</span>
                                             <span class="fw-bold">{{ number_format($percentage, 0) }}%</span>
                                         </div>
                                         <div class="progress" style="height: 8px; border-radius: 50px;">
@@ -117,7 +117,7 @@
                                     @if($borrowing->isOverdue())
                                         <div class="alert alert-danger small mb-0 mt-2" style="border-radius: 8px;">
                                             <i class="fas fa-info-circle me-1"></i>
-                                            Please return this book as soon as possible to avoid fines.
+                                            Harap segera mengembalikan buku ini untuk menghindari denda.
                                         </div>
                                     @endif
                                 </div>
@@ -129,10 +129,10 @@
                 <div class="col-12">
                     <div class="card-modern text-center py-5">
                         <i class="fas fa-book-open fa-4x text-muted mb-3" style="opacity: 0.3;"></i>
-                        <h5 class="text-muted mb-2">No Active Books</h5>
-                        <p class="text-muted mb-3">You don't have any borrowed books at the moment</p>
+                        <h5 class="text-muted mb-2">Tidak Ada Buku Aktif</h5>
+                        <p class="text-muted mb-3">Anda belum meminjam buku saat ini</p>
                         <a href="{{ route('catalog.index') }}" class="btn btn-primary-modern btn-modern">
-                            <i class="fas fa-search me-2"></i>Browse Catalog
+                            <i class="fas fa-search me-2"></i>Jelajahi Katalog
                         </a>
                     </div>
                 </div>
@@ -169,8 +169,8 @@
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-hourglass-half fa-2x me-3"></i>
                                             <div>
-                                                <strong>Waiting for Approval</strong>
-                                                <p class="small mb-0">Requested on {{ $borrowing->created_at->format('d M Y') }}</p>
+                                                <strong>Menunggu Persetujuan</strong>
+                                                <p class="small mb-0">Diminta pada {{ $borrowing->created_at->format('d M Y') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -183,8 +183,8 @@
                 <div class="col-12">
                     <div class="card-modern text-center py-5">
                         <i class="fas fa-clock fa-4x text-muted mb-3" style="opacity: 0.3;"></i>
-                        <h5 class="text-muted mb-2">No Pending Requests</h5>
-                        <p class="text-muted">You don't have any pending borrowing requests</p>
+                        <h5 class="text-muted mb-2">Tidak Ada Permintaan Menunggu</h5>
+                        <p class="text-muted">Anda tidak memiliki permintaan peminjaman yang menunggu</p>
                     </div>
                 </div>
             @endforelse
@@ -217,16 +217,16 @@
                                     <div class="small text-muted">
                                         <div class="mb-1">
                                             <i class="fas fa-calendar-check me-1 text-success"></i>
-                                            Returned: {{ $borrowing->return_date ? $borrowing->return_date->format('d M Y') : 'N/A' }}
+                                            Dikembalikan: {{ $borrowing->return_date ? $borrowing->return_date->format('d M Y') : 'N/A' }}
                                         </div>
                                         <div>
                                             <i class="fas fa-clock me-1"></i>
-                                            Borrowed: {{ $borrowing->borrow_date->format('d M Y') }} - {{ $borrowing->due_date->format('d M Y') }}
+                                            Dipinjam: {{ $borrowing->borrow_date->format('d M Y') }} - {{ $borrowing->due_date->format('d M Y') }}
                                         </div>
                                     </div>
                                     
                                     <span class="badge badge-modern bg-info mt-2">
-                                        <i class="fas fa-check-circle me-1"></i>Completed
+                                        <i class="fas fa-check-circle me-1"></i>Selesai
                                     </span>
                                 </div>
                             </div>
@@ -237,8 +237,8 @@
                 <div class="col-12">
                     <div class="card-modern text-center py-5">
                         <i class="fas fa-inbox fa-4x text-muted mb-3" style="opacity: 0.3;"></i>
-                        <h5 class="text-muted mb-2">No Return History</h5>
-                        <p class="text-muted">You haven't returned any books yet</p>
+                        <h5 class="text-muted mb-2">Tidak Ada Riwayat Pengembalian</h5>
+                        <p class="text-muted">Anda belum mengembalikan buku apapun</p>
                     </div>
                 </div>
             @endforelse
@@ -246,8 +246,8 @@
         
         @if($borrowings->where('status', 'returned')->count() > 6)
             <div class="text-center mt-4">
-                <a href="{{ route('member.borrowings.history') }}" class="btn btn-outline-primary btn-modern">
-                    <i class="fas fa-history me-2"></i>View Full History
+                <a href="{{ route('member.peminjaman.history') }}" class="btn btn-outline-primary btn-modern">
+                    <i class="fas fa-history me-2"></i>Lihat Riwayat Lengkap
                 </a>
             </div>
         @endif

@@ -72,8 +72,16 @@ class BookController extends Controller
             'acquisition_date' => 'nullable|date',
         ]);
 
+        // Debug: Log file upload attempt
+        \Log::info('Cover image upload', [
+            'has_file' => $request->hasFile('cover_image'),
+            'file_valid' => $request->hasFile('cover_image') ? $request->file('cover_image')->isValid() : false,
+            'file_name' => $request->hasFile('cover_image') ? $request->file('cover_image')->getClientOriginalName() : null,
+        ]);
+
         if ($request->hasFile('cover_image')) {
             $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
+            \Log::info('Cover image stored', ['path' => $validated['cover_image']]);
         }
 
         // Auto-generate barcode if not provided
@@ -81,10 +89,26 @@ class BookController extends Controller
             $validated['barcode'] = 'BK' . date('Ymd') . str_pad(Book::count() + 1, 5, '0', STR_PAD_LEFT);
         }
 
+        // Set publisher name from publisher_id if not provided
+        if (empty($validated['publisher']) && !empty($validated['publisher_id'])) {
+            $publisher = Publisher::find($validated['publisher_id']);
+            $validated['publisher'] = $publisher ? $publisher->name : '-';
+        } elseif (empty($validated['publisher'])) {
+            $validated['publisher'] = '-';
+        }
+
+        // Set category name from category_id if not provided
+        if (empty($validated['category']) && !empty($validated['category_id'])) {
+            $category = Category::find($validated['category_id']);
+            $validated['category'] = $category ? $category->name : '-';
+        } elseif (empty($validated['category'])) {
+            $validated['category'] = '-';
+        }
+
         Book::create($validated);
 
-        return redirect()->route('admin.books.index')
-            ->with('success', 'Book created successfully.');
+        return redirect()->route('admin.buku.index')
+            ->with('success', 'Buku berhasil ditambahkan.');
     }
 
     public function edit(Book $book)
@@ -136,21 +160,37 @@ class BookController extends Controller
             $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
         }
 
+        // Set publisher name from publisher_id if not provided
+        if (empty($validated['publisher']) && !empty($validated['publisher_id'])) {
+            $publisher = Publisher::find($validated['publisher_id']);
+            $validated['publisher'] = $publisher ? $publisher->name : '-';
+        } elseif (empty($validated['publisher'])) {
+            $validated['publisher'] = '-';
+        }
+
+        // Set category name from category_id if not provided
+        if (empty($validated['category']) && !empty($validated['category_id'])) {
+            $category = Category::find($validated['category_id']);
+            $validated['category'] = $category ? $category->name : '-';
+        } elseif (empty($validated['category'])) {
+            $validated['category'] = '-';
+        }
+
         // Update available copies based on total copies change
         $copiesDifference = $validated['total_copies'] - $book->total_copies;
         $validated['available_copies'] = max(0, $book->available_copies + $copiesDifference);
 
         $book->update($validated);
 
-        return redirect()->route('admin.books.index')
-            ->with('success', 'Book updated successfully.');
+        return redirect()->route('admin.buku.index')
+            ->with('success', 'Buku berhasil diperbarui.');
     }
 
     public function destroy(Book $book)
     {
         if ($book->borrowings()->whereIn('status', ['pending', 'approved'])->count() > 0) {
             return redirect()->back()
-                ->with('error', 'Cannot delete book with active borrowings.');
+                ->with('error', 'Tidak dapat menghapus buku yang sedang dipinjam.');
         }
 
         if ($book->cover_image) {
@@ -159,7 +199,7 @@ class BookController extends Controller
         
         $book->delete();
 
-        return redirect()->route('admin.books.index')
-            ->with('success', 'Book deleted successfully.');
+        return redirect()->route('admin.buku.index')
+            ->with('success', 'Buku berhasil dihapus.');
     }
 }

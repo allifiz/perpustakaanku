@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Categories')
+@section('title', 'Kelola Kategori')
 
 @section('content')
 <div class="row mb-4">
     <div class="col-md-6">
-        <h2>Book Categories</h2>
-        <p class="text-muted">Manage DDC (Dewey Decimal Classification) categories</p>
+        <h2>Kategori Buku</h2>
+        <p class="text-muted">Kelola kategori DDC (Dewey Decimal Classification)</p>
     </div>
     <div class="col-md-6 text-end">
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add New Category
+        <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Tambah Kategori
         </a>
     </div>
 </div>
@@ -35,13 +35,13 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th width="80">Code</th>
-                        <th>Name</th>
-                        <th>Parent</th>
-                        <th width="100">Order</th>
+                        <th width="80">Kode</th>
+                        <th>Nama</th>
+                        <th>Induk</th>
+                        <th width="100">Urutan</th>
                         <th width="80">Status</th>
-                        <th width="100">Books</th>
-                        <th width="150" class="text-end">Actions</th>
+                        <th width="100">Buku</th>
+                        <th width="150" class="text-end">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,9 +64,9 @@
                         <td>{{ $category->order ?? '-' }}</td>
                         <td>
                             @if($category->is_active)
-                                <span class="badge bg-success">Active</span>
+                                <span class="badge bg-success">Aktif</span>
                             @else
-                                <span class="badge bg-secondary">Inactive</span>
+                                <span class="badge bg-secondary">Nonaktif</span>
                             @endif
                         </td>
                         <td>
@@ -74,7 +74,7 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('admin.categories.edit', $category) }}" 
+                                <a href="{{ route('admin.kategori.edit', $category) }}" 
                                    class="btn btn-outline-primary" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -84,7 +84,7 @@
                                 </button>
                             </div>
                             <form id="delete-form-{{ $category->id }}" 
-                                  action="{{ route('admin.categories.destroy', $category) }}" 
+                                  action="{{ route('admin.kategori.destroy', $category) }}" 
                                   method="POST" style="display: none;">
                                 @csrf
                                 @method('DELETE')
@@ -95,9 +95,9 @@
                     <tr>
                         <td colspan="7" class="text-center py-4">
                             <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">No categories found.</p>
-                            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add First Category
+                            <p class="text-muted">Belum ada kategori yang ditemukan.</p>
+                            <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Tambah Kategori Pertama
                             </a>
                         </td>
                     </tr>
@@ -116,7 +116,7 @@
 
 <script>
 function deleteCategory(id) {
-    if (confirm('Are you sure you want to delete this category? This cannot be undone.')) {
+    if (confirm('Apakah Anda yakin ingin menghapus kategori ini? Tindakan tidak dapat dibatalkan.')) {
         document.getElementById('delete-form-' + id).submit();
     }
 }

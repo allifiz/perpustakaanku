@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Locations')
+@section('title', 'Kelola Lokasi')
 
 @section('content')
 <div class="row mb-4">
@@ -9,7 +9,7 @@
         <p class="text-muted">Manage library shelves, rooms, and storage areas</p>
     </div>
     <div class="col-md-6 text-end">
-        <a href="{{ route('admin.locations.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.lokasi.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Add New Location
         </a>
     </div>
@@ -93,7 +93,7 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('admin.locations.edit', $location) }}" 
+                                <a href="{{ route('admin.lokasi.edit', $location) }}" 
                                    class="btn btn-outline-primary" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -103,7 +103,7 @@
                                 </button>
                             </div>
                             <form id="delete-form-{{ $location->id }}" 
-                                  action="{{ route('admin.locations.destroy', $location) }}" 
+                                  action="{{ route('admin.lokasi.destroy', $location) }}" 
                                   method="POST" style="display: none;">
                                 @csrf
                                 @method('DELETE')
@@ -115,7 +115,7 @@
                         <td colspan="8" class="text-center py-4">
                             <i class="fas fa-map-marker-alt fa-3x text-muted mb-3"></i>
                             <p class="text-muted">No locations found.</p>
-                            <a href="{{ route('admin.locations.create') }}" class="btn btn-primary">
+                            <a href="{{ route('admin.lokasi.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Add First Location
                             </a>
                         </td>
@@ -135,7 +135,7 @@
 
 <script>
 function deleteLocation(id) {
-    if (confirm('Are you sure you want to delete this location? This cannot be undone.')) {
+    if (confirm('Apakah Anda yakin ingin menghapus lokasi ini? Tindakan tidak dapat dibatalkan.')) {
         document.getElementById('delete-form-' + id).submit();
     }
 }

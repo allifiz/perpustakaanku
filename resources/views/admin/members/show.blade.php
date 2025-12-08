@@ -9,8 +9,8 @@
         <h1><i class="fas fa-user"></i> Member Details</h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.members.index') }}">Members</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dasbor') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.anggota.index') }}">Members</a></li>
                 <li class="breadcrumb-item active">Details</li>
             </ol>
         </nav>
@@ -56,11 +56,11 @@
                     </tr>
                     <tr>
                         <th>Registered</th>
-                        <td>{{ $member->created_at->format('d M Y H:i') }}</td>
+                        <td>{{ $member->created_at?->format('d M Y H:i') ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th>Last Updated</th>
-                        <td>{{ $member->updated_at->format('d M Y H:i') }}</td>
+                        <td>{{ $member->updated_at?->format('d M Y H:i') ?? '-' }}</td>
                     </tr>
                 </table>
             </div>
@@ -78,6 +78,18 @@
                 @else
                     <p class="text-muted">No ID card uploaded</p>
                 @endif
+
+                <div class="mt-4 pt-3 border-top">
+                    <h6 class="text-muted mb-2">Member QR Code</h6>
+                    <div class="qrcode d-flex justify-content-center" 
+                         data-value="{{ $member->member_card_number ?? $member->id }}"
+                         data-width="128"
+                         data-height="128"
+                         style="cursor: pointer;"
+                         onclick="showQrModal('{{ $member->member_card_number ?? $member->id }}', '{{ $member->name }}')">
+                    </div>
+                    <small class="text-muted text-center d-block mt-2">Click to enlarge</small>
+                </div>
             </div>
         </div>
         
@@ -87,7 +99,7 @@
             </div>
             <div class="card-body">
                 @if($member->status == 'pending')
-                    <form action="{{ route('admin.members.status', $member) }}" method="POST" class="mb-2">
+                    <form action="{{ route('admin.anggota.status', $member) }}" method="POST" class="mb-2">
                         @csrf
                         <input type="hidden" name="status" value="active">
                         <button type="submit" class="btn btn-success btn-sm w-100" 
@@ -96,7 +108,7 @@
                         </button>
                     </form>
                     
-                    <form action="{{ route('admin.members.status', $member) }}" method="POST">
+                    <form action="{{ route('admin.anggota.status', $member) }}" method="POST">
                         @csrf
                         <input type="hidden" name="status" value="rejected">
                         <button type="submit" class="btn btn-danger btn-sm w-100" 
@@ -106,7 +118,7 @@
                     </form>
                 @endif
                 
-                <form action="{{ route('admin.members.destroy', $member) }}" method="POST" class="mt-2">
+                <form action="{{ route('admin.anggota.destroy', $member) }}" method="POST" class="mt-2">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm w-100" 
@@ -140,9 +152,9 @@
                         <tbody>
                             @forelse($member->borrowings as $borrowing)
                             <tr>
-                                <td>{{ $borrowing->book->title }}</td>
-                                <td>{{ $borrowing->borrow_date->format('d M Y') }}</td>
-                                <td>{{ $borrowing->due_date->format('d M Y') }}</td>
+                                <td>{{ $borrowing->book->title ?? 'Deleted Book' }}</td>
+                                <td>{{ $borrowing->borrow_date?->format('d M Y') ?? '-' }}</td>
+                                <td>{{ $borrowing->due_date?->format('d M Y') ?? '-' }}</td>
                                 <td>
                                     @if($borrowing->return_date)
                                         {{ $borrowing->return_date->format('d M Y') }}
@@ -174,4 +186,42 @@
         </div>
     </div>
 </div>
+
+<!-- Modal untuk Zoom QR Code -->
+<div class="modal fade" id="qrZoomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrModalTitle">QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="qrModalContent" class="d-flex justify-content-center my-3"></div>
+                <p id="qrModalValue" class="fw-bold text-break"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showQrModal(value, name) {
+    document.getElementById('qrModalTitle').innerText = name || 'QR Code';
+    document.getElementById('qrModalValue').innerText = value;
+    
+    var container = document.getElementById('qrModalContent');
+    container.innerHTML = ''; // Clear previous
+    
+    new QRCode(container, {
+        text: value,
+        width: 250,
+        height: 250,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+    
+    var modal = new bootstrap.Modal(document.getElementById('qrZoomModal'));
+    modal.show();
+}
+</script>
 @endsection

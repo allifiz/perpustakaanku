@@ -1,15 +1,15 @@
 {{-- resources/views/admin/borrowings/index.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'Manage Borrowings')
+@section('title', 'Kelola Peminjaman')
 
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
-            <h1><i class="fas fa-exchange-alt"></i> Manage Borrowings</h1>
+            <h1><i class="fas fa-exchange-alt"></i> Kelola Peminjaman</h1>
             <a href="{{ route('admin.peminjaman.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> New Borrowing
+                <i class="fas fa-plus"></i> Peminjaman Baru
             </a>
         </div>
         <hr>
@@ -58,10 +58,10 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Member</th>
-                                <th>Book</th>
-                                <th>Borrow Date</th>
-                                <th>Due Date</th>
+                                <th>Anggota</th>
+                                <th>Buku</th>
+                                <th>Tanggal Pinjam</th>
+                                <th>Jatuh Tempo</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>

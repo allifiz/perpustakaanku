@@ -27,12 +27,12 @@ class MemberController extends Controller
 
         $member->update(['status' => $request->status]);
 
-        return redirect()->back()->with('success', 'Member status updated successfully.');
+        return redirect()->back()->with('success', 'Status anggota berhasil diperbarui.');
     }
 
     public function destroy(User $member)
     {
         $member->delete();
-        return redirect()->route('admin.members.index')->with('success', 'Member deleted successfully.');
+        return redirect()->route('admin.anggota.index')->with('success', 'Anggota berhasil dihapus.');
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Catalog - OPAC')
+@section('title', 'Katalog Perpustakaan - OPAC')
 
 @section('content')
 <div class="container py-5">
@@ -16,8 +16,8 @@
                     <div class="position-relative">
                         <div class="text-center text-white mb-4">
                             <i class="fas fa-book-open fa-4x mb-3" style="opacity: 0.9;"></i>
-                            <h1 class="fw-bold mb-2">Online Public Access Catalog</h1>
-                            <p class="lead mb-0">Discover thousands of books in our digital library</p>
+                            <h1 class="fw-bold mb-2">Katalog Akses Publik Online</h1>
+                            <p class="lead mb-0">Temukan ribuan buku di perpustakaan digital kami</p>
                         </div>
                         
                         <form method="GET" action="{{ route('catalog.index') }}">
@@ -31,10 +31,10 @@
                                                name="q" 
                                                class="form-control border-start-0 bg-white" 
                                                style="border-left: none !important; box-shadow: none;"
-                                               placeholder="Search by title, author, ISBN, or keywords..." 
+                                               placeholder="Cari berdasarkan judul, penulis, ISBN, atau kata kunci..." 
                                                value="{{ request('q') }}">
                                         <button type="submit" class="btn btn-light fw-bold px-5" style="border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
-                                            <i class="fas fa-search me-2"></i>Search
+                                            <i class="fas fa-search me-2"></i>Cari
                                         </button>
                                     </div>
                                 </div>
@@ -45,7 +45,7 @@
                                 <a href="#advancedSearch" 
                                    data-bs-toggle="collapse" 
                                    class="text-white text-decoration-none fw-semibold">
-                                    <i class="fas fa-sliders-h me-2"></i>Advanced Search Options
+                                    <i class="fas fa-sliders-h me-2"></i>Opsi Pencarian Lanjutan
                                     <i class="fas fa-chevron-down ms-2"></i>
                                 </a>
                             </div>
@@ -54,12 +54,12 @@
                             <div class="collapse mt-4" id="advancedSearch">
                                 <div class="card bg-white bg-opacity-95" style="border-radius: 12px;">
                                     <div class="card-body">
-                                        <h6 class="fw-bold mb-3"><i class="fas fa-filter me-2"></i>Filter Your Search</h6>
+                                        <h6 class="fw-bold mb-3"><i class="fas fa-filter me-2"></i>Filter Pencarian Anda</h6>
                                         <div class="row g-3">
                                             <div class="col-md-3">
-                                                <label class="form-label small fw-semibold">Category</label>
+                                                <label class="form-label small fw-semibold">Kategori</label>
                                                 <select name="category_id" class="form-select">
-                                                    <option value="">All Categories</option>
+                                                    <option value="">Semua Kategori</option>
                                                     @foreach($categories as $category)
                                                         <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
                                                             {{ $category->code }} - {{ $category->name }}
@@ -68,9 +68,9 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label small fw-semibold">Publisher</label>
+                                                <label class="form-label small fw-semibold">Penerbit</label>
                                                 <select name="publisher_id" class="form-select">
-                                                    <option value="">All Publishers</option>
+                                                    <option value="">Semua Penerbit</option>
                                                     @foreach($publishers as $publisher)
                                                         <option value="{{ $publisher->id }}" {{ request('publisher_id') == $publisher->id ? 'selected' : '' }}>
                                                             {{ $publisher->name }}
@@ -79,9 +79,9 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="form-label small fw-semibold">Language</label>
+                                                <label class="form-label small fw-semibold">Bahasa</label>
                                                 <select name="language" class="form-select">
-                                                    <option value="">All Languages</option>
+                                                    <option value="">Semua Bahasa</option>
                                                     @foreach($languages as $lang)
                                                         <option value="{{ $lang }}" {{ request('language') == $lang ? 'selected' : '' }}>
                                                             {{ $lang }}
@@ -90,12 +90,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="form-label small fw-semibold">Year From</label>
+                                                <label class="form-label small fw-semibold">Tahun Dari</label>
                                                 <input type="number" name="year_from" class="form-control" 
                                                        value="{{ request('year_from') }}" placeholder="1900">
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="form-label small fw-semibold">Year To</label>
+                                                <label class="form-label small fw-semibold">Tahun Sampai</label>
                                                 <input type="number" name="year_to" class="form-control" 
                                                        value="{{ request('year_to') }}" placeholder="{{ date('Y') }}">
                                             </div>
@@ -116,11 +116,11 @@
             <h4 class="mb-0">
                 <i class="fas fa-books me-2" style="color: var(--primary-color, #4F46E5);"></i>
                 <span class="fw-bold">{{ $books->total() }}</span> 
-                <span class="text-muted">{{ $books->total() == 1 ? 'Book' : 'Books' }} Found</span>
+                <span class="text-muted">{{ $books->total() == 1 ? 'Buku' : 'Buku' }} Ditemukan</span>
             </h4>
             @if(request('q'))
                 <small class="text-muted">
-                    Search results for: <strong>"{{ request('q') }}"</strong>
+                    Hasil pencarian untuk: <strong>"{{ request('q') }}"</strong>
                 </small>
             @endif
         </div>
@@ -129,15 +129,15 @@
                 <div class="btn-group" role="group">
                     <a href="{{ route('catalog.index', array_merge(request()->except('sort', 'order'), ['sort' => 'title', 'order' => 'asc'])) }}" 
                        class="btn btn-sm {{ request('sort') == 'title' ? 'btn-primary' : 'btn-outline-secondary' }}">
-                        <i class="fas fa-sort-alpha-down me-1"></i>Title
+                        <i class="fas fa-sort-alpha-down me-1"></i>Judul
                     </a>
                     <a href="{{ route('catalog.index', array_merge(request()->except('sort', 'order'), ['sort' => 'publication_year', 'order' => 'desc'])) }}" 
                        class="btn btn-sm {{ request('sort') == 'publication_year' ? 'btn-primary' : 'btn-outline-secondary' }}">
-                        <i class="fas fa-calendar me-1"></i>Newest
+                        <i class="fas fa-calendar me-1"></i>Terbaru
                     </a>
                     <a href="{{ route('catalog.index', array_merge(request()->except('sort', 'order'), ['sort' => 'author', 'order' => 'asc'])) }}" 
                        class="btn btn-sm {{ request('sort') == 'author' ? 'btn-primary' : 'btn-outline-secondary' }}">
-                        <i class="fas fa-user me-1"></i>Author
+                        <i class="fas fa-user me-1"></i>Penulis
                     </a>
                 </div>
             </div>
@@ -167,11 +167,11 @@
                             <div class="position-absolute top-0 end-0 m-2">
                                 @if($book->available_copies > 0)
                                     <span class="badge bg-success" style="border-radius: 20px; padding: 6px 12px; font-size: 11px;">
-                                        <i class="fas fa-check-circle me-1"></i>{{ $book->available_copies }} Available
+                                        <i class="fas fa-check-circle me-1"></i>{{ $book->available_copies }} Tersedia
                                     </span>
                                 @else
                                     <span class="badge bg-danger" style="border-radius: 20px; padding: 6px 12px; font-size: 11px;">
-                                        <i class="fas fa-times-circle me-1"></i>Checked Out
+                                        <i class="fas fa-times-circle me-1"></i>Dipinjam
                                     </span>
                                 @endif
                             </div>
@@ -217,7 +217,7 @@
                                     {{ $book->isbn ? 'ISBN: ' . substr($book->isbn, -6) : 'No ISBN' }}
                                 </small>
                                 <span class="text-primary small fw-semibold">
-                                    View Details <i class="fas fa-arrow-right ms-1"></i>
+                                    Lihat Detail <i class="fas fa-arrow-right ms-1"></i>
                                 </span>
                             </div>
                         </div>
@@ -231,10 +231,10 @@
                     <div class="mb-4">
                         <i class="fas fa-search fa-5x text-muted opacity-50"></i>
                     </div>
-                    <h4 class="fw-bold mb-2">No Books Found</h4>
-                    <p class="text-muted mb-4">We couldn't find any books matching your search criteria.</p>
+                    <h4 class="fw-bold mb-2">Tidak Ada Buku Ditemukan</h4>
+                    <p class="text-muted mb-4">Kami tidak dapat menemukan buku yang sesuai dengan kriteria pencarian Anda.</p>
                     <a href="{{ route('catalog.index') }}" class="btn btn-primary">
-                        <i class="fas fa-redo me-2"></i>Clear Filters & Browse All
+                        <i class="fas fa-redo me-2"></i>Hapus Filter & Jelajahi Semua
                     </a>
                 </div>
             </div>

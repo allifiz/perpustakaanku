@@ -28,9 +28,9 @@ class LoginController extends Controller
             // Gunakan pengecekan langsung tanpa method isAdmin()
             $user = Auth::user();
             if ($user && $user->role === 'admin') {
-                return redirect()->intended('/admin/dashboard');
+                return redirect()->intended(route('admin.dasbor'));
             } else {
-                return redirect()->intended('/member/dashboard');
+                return redirect()->intended(route('member.dashboard'));
             }
         }
 

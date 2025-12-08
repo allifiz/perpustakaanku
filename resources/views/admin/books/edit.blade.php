@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Book')
+@section('title', 'Ubah Buku')
 
 @section('content')
 <div class="row mb-4">
     <div class="col-12">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.books.index') }}">Books</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dasbor') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.buku.index') }}">Books</a></li>
                 <li class="breadcrumb-item active">Edit: {{ $book->title }}</li>
             </ol>
         </nav>
@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<form method="POST" action="{{ route('admin.books.update', $book) }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('admin.buku.update', $book) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     
@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                                <label for="title" class="form-label">Judul <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('title') is-invalid @enderror" 
                                        id="title" name="title" value="{{ old('title', $book->title) }}" required>
                                 @error('title')
@@ -42,7 +42,7 @@
                         
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="author" class="form-label">Author <span class="text-danger">*</span></label>
+                                <label for="author" class="form-label">Penulis <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('author') is-invalid @enderror" 
                                        id="author" name="author" value="{{ old('author', $book->author) }}" required>
                                 @error('author')
@@ -390,7 +390,7 @@
     <div class="row">
         <div class="col-12">
             <div class="d-flex gap-2 justify-content-end">
-                <a href="{{ route('admin.books.index') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.buku.index') }}" class="btn btn-secondary">
                     <i class="fas fa-times"></i> Cancel
                 </a>
                 <button type="submit" class="btn btn-primary">

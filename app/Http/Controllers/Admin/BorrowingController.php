@@ -67,7 +67,7 @@ public function index(Request $request)
         $book = Book::findOrFail($request->book_id);
 
         if ($book->available_copies <= 0) {
-            return redirect()->back()->with('error', 'Book is not available.')->withInput();
+            return redirect()->back()->with('error', 'Buku tidak tersedia.')->withInput();
         }
 
         Borrowing::create([
@@ -78,18 +78,18 @@ public function index(Request $request)
             'status' => 'pending',
         ]);
 
-        return redirect()->route('admin.peminjaman.index')->with('success', 'Borrowing request created successfully.');
+        return redirect()->route('admin.peminjaman.index')->with('success', 'Permintaan peminjaman berhasil dibuat.');
     }
 
     public function approve(Borrowing $borrowing)
     {
         if ($borrowing->status !== 'pending') {
-            return redirect()->back()->with('error', 'Borrowing request cannot be approved.');
+            return redirect()->back()->with('error', 'Permintaan peminjaman tidak dapat disetujui.');
         }
 
         $book = $borrowing->book;
         if ($book->available_copies <= 0) {
-            return redirect()->back()->with('error', 'Book is not available.');
+            return redirect()->back()->with('error', 'Buku tidak tersedia.');
         }
 
         $borrowing->update([
@@ -98,13 +98,13 @@ public function index(Request $request)
 
         $book->decrement('available_copies');
 
-        return redirect()->back()->with('success', 'Borrowing request approved successfully.');
+        return redirect()->back()->with('success', 'Permintaan peminjaman berhasil disetujui.');
     }
 
     public function returnBook(Borrowing $borrowing)
     {
         if ($borrowing->status !== 'approved') {
-            return redirect()->back()->with('error', 'Book cannot be returned.');
+            return redirect()->back()->with('error', 'Buku tidak dapat dikembalikan.');
         }
 
         $borrowing->update([
@@ -114,13 +114,13 @@ public function index(Request $request)
 
         $borrowing->book->increment('available_copies');
 
-        return redirect()->back()->with('success', 'Book returned successfully.');
+        return redirect()->back()->with('success', 'Buku berhasil dikembalikan.');
     }   
 
     public function destroy(Borrowing $borrowing)
     {
         $borrowing->delete();
-        return redirect()->route('admin.peminjaman.index')->with('success', 'Borrowing record deleted successfully.');
+        return redirect()->route('admin.peminjaman.index')->with('success', 'Data peminjaman berhasil dihapus.');
     }
 
   public function history()

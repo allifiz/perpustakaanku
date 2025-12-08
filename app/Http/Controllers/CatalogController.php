@@ -94,8 +94,19 @@ class CatalogController extends Controller
     {
         if (!Auth::check()) {
             return redirect()->route('login')
-                ->with('error', 'Please login to reserve books.');
+                ->with('error', 'Silakan login terlebih dahulu untuk reservasi buku.');
         }
+
+        // Validasi input tanggal
+        $request->validate([
+            'reserved_date' => 'required|date|after_or_equal:today',
+            'expired_date' => 'required|date|after:reserved_date',
+        ], [
+            'reserved_date.required' => 'Tanggal mulai peminjaman harus diisi',
+            'reserved_date.after_or_equal' => 'Tanggal mulai tidak boleh sebelum hari ini',
+            'expired_date.required' => 'Tanggal selesai peminjaman harus diisi',
+            'expired_date.after' => 'Tanggal selesai harus setelah tanggal mulai',
+        ]);
 
         $user = Auth::user();
         $book = Book::findOrFail($id);
@@ -103,13 +114,13 @@ class CatalogController extends Controller
         // Check if user can borrow
         if (!$user->canBorrow()) {
             return redirect()->back()
-                ->with('error', 'You have reached your borrowing limit or your membership has expired.');
+                ->with('error', 'Anda telah mencapai batas peminjaman atau keanggotaan Anda telah berakhir.');
         }
 
         // Check if book is available
         if (!$book->isAvailable()) {
             return redirect()->back()
-                ->with('error', 'This book is currently not available.');
+                ->with('error', 'Buku ini saat ini tidak tersedia.');
         }
 
         // Check if user already has active reservation
@@ -120,19 +131,19 @@ class CatalogController extends Controller
 
         if ($existingReservation) {
             return redirect()->back()
-                ->with('error', 'You already have an active reservation for this book.');
+                ->with('error', 'Anda sudah memiliki reservasi aktif untuk buku ini.');
         }
 
         // Create reservation
         Reservation::create([
             'user_id' => $user->id,
             'book_id' => $book->id,
-            'reserved_date' => now(),
-            'expired_date' => now()->addDays(3), // 3 days to pick up
+            'reserved_date' => $request->reserved_date,
+            'expired_date' => $request->expired_date,
             'status' => 'pending',
         ]);
 
         return redirect()->back()
-            ->with('success', 'Book reserved successfully. Please pick up within 3 days.');
+            ->with('success', 'Buku berhasil direservasi. Silakan tunggu persetujuan admin.');
     }
 }

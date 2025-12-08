@@ -32,8 +32,8 @@ class LocationController extends Controller
         $validated['is_active'] = $request->has('is_active');
         Location::create($validated);
 
-        return redirect()->route('admin.locations.index')
-            ->with('success', 'Location created successfully.');
+        return redirect()->route('admin.lokasi.index')
+            ->with('success', 'Lokasi berhasil ditambahkan.');
     }
 
     public function edit(Location $location)
@@ -54,19 +54,19 @@ class LocationController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $location->update($validated);
 
-        return redirect()->route('admin.locations.index')
-            ->with('success', 'Location updated successfully.');
+        return redirect()->route('admin.lokasi.index')
+            ->with('success', 'Lokasi berhasil diperbarui.');
     }
 
     public function destroy(Location $location)
     {
         if ($location->books()->count() > 0) {
             return redirect()->back()
-                ->with('error', 'Cannot delete location with existing books.');
+                ->with('error', 'Tidak dapat menghapus lokasi yang memiliki buku.');
         }
 
         $location->delete();
-        return redirect()->route('admin.locations.index')
-            ->with('success', 'Location deleted successfully.');
+        return redirect()->route('admin.lokasi.index')
+            ->with('success', 'Lokasi berhasil dihapus.');
     }
 }

@@ -1,15 +1,15 @@
 {{-- resources/views/admin/books/index.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'Manage Books')
+@section('title', 'Kelola Buku')
 
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
-            <h1><i class="fas fa-book"></i> Manage Books</h1>
-            <a href="{{ route('admin.books.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add New Book
+            <h1><i class="fas fa-book"></i> Kelola Buku</h1>
+            <a href="{{ route('admin.buku.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Tambah Buku Baru
             </a>
         </div>
         <hr>
@@ -20,10 +20,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form method="GET" action="{{ route('admin.books.index') }}">
+                <form method="GET" action="{{ route('admin.buku.index') }}">
                     <div class="row">
                         <div class="col-md-4">
-                            <input type="text" name="search" class="form-control" placeholder="Search by title or author" 
+                            <input type="text" name="search" class="form-control" placeholder="Cari berdasarkan judul atau penulis" 
                                    value="{{ request('search') }}">
                         </div>
                         <div class="col-md-2">
@@ -53,14 +53,14 @@
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
                                 <th>Cover</th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Category</th>
-                                <th>Available</th>
+                                <th>QR Code</th>
+                                <th>Judul</th>
+                                <th>Penulis</th>
+                                <th>Kategori</th>
+                                <th>Tersedia</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,29 +75,38 @@
                                         </div>
                                     @endif
                                 </td>
+                                <td>
+                                    <div class="qrcode" 
+                                         data-value="{{ $book->barcode ?? $book->id }}"
+                                         data-width="50"
+                                         data-height="50"
+                                         style="cursor: pointer;"
+                                         onclick="showQrModal('{{ $book->barcode ?? $book->id }}', '{{ $book->title }}')">
+                                    </div>
+                                </td>
                                 <td>{{ $book->title }}</td>
                                 <td>{{ $book->author }}</td>
                                 <td>{{ $book->category }}</td>
                                 <td>{{ $book->available_copies }} / {{ $book->total_copies }}</td>
                                 <td>
                                     @if($book->status == 'available')
-                                        <span class="badge bg-success">Available</span>
+                                        <span class="badge bg-success">Tersedia</span>
                                     @elseif($book->status == 'borrowed')
-                                        <span class="badge bg-warning">Borrowed</span>
+                                        <span class="badge bg-warning">Dipinjam</span>
                                     @else
-                                        <span class="badge bg-secondary">Maintenance</span>
+                                        <span class="badge bg-secondary">Perawatan</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route('admin.books.edit', $book) }}" class="btn btn-warning btn-sm">
+                                        <a href="{{ route('admin.buku.edit', $book) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('admin.books.destroy', $book) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.buku.destroy', $book) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" 
-                                                    onclick="return confirm('Delete this book? This cannot be undone.')">
+                                                    onclick="return confirm('Hapus buku ini? Tindakan tidak dapat dibatalkan.')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -106,7 +115,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center">No books found.</td>
+                                <td colspan="7" class="text-center">Tidak ada buku ditemukan.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -120,4 +129,42 @@
         </div>
     </div>
 </div>
+
+<!-- Modal untuk Zoom QR Code -->
+<div class="modal fade" id="qrZoomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrModalTitle">QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="qrModalContent" class="d-flex justify-content-center my-3"></div>
+                <p id="qrModalValue" class="fw-bold text-break"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showQrModal(value, title) {
+    document.getElementById('qrModalTitle').innerText = title || 'QR Code';
+    document.getElementById('qrModalValue').innerText = value;
+    
+    var container = document.getElementById('qrModalContent');
+    container.innerHTML = ''; // Clear previous
+    
+    new QRCode(container, {
+        text: value,
+        width: 250,
+        height: 250,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+    
+    var modal = new bootstrap.Modal(document.getElementById('qrZoomModal'));
+    modal.show();
+}
+</script>
 @endsection

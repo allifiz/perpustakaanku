@@ -33,8 +33,8 @@ class PublisherController extends Controller
         $validated['is_active'] = $request->has('is_active');
         Publisher::create($validated);
 
-        return redirect()->route('admin.publishers.index')
-            ->with('success', 'Publisher created successfully.');
+        return redirect()->route('admin.penerbit.index')
+            ->with('success', 'Penerbit berhasil ditambahkan.');
     }
 
     public function edit(Publisher $publisher)
@@ -56,19 +56,19 @@ class PublisherController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $publisher->update($validated);
 
-        return redirect()->route('admin.publishers.index')
-            ->with('success', 'Publisher updated successfully.');
+        return redirect()->route('admin.penerbit.index')
+            ->with('success', 'Penerbit berhasil diperbarui.');
     }
 
     public function destroy(Publisher $publisher)
     {
         if ($publisher->books()->count() > 0) {
             return redirect()->back()
-                ->with('error', 'Cannot delete publisher with existing books.');
+                ->with('error', 'Tidak dapat menghapus penerbit yang memiliki buku.');
         }
 
         $publisher->delete();
-        return redirect()->route('admin.publishers.index')
-            ->with('success', 'Publisher deleted successfully.');
+        return redirect()->route('admin.penerbit.index')
+            ->with('success', 'Penerbit berhasil dihapus.');
     }
 }

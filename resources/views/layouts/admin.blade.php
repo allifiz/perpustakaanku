@@ -13,58 +13,70 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
-            <a href="{{ route('admin.dashboard') }}">
+            <a href="{{ route('admin.dasbor') }}">
                 <i class="fas fa-book me-2"></i>
                 <span>Perpustakaan Admin</span>
             </a>
         </div>
         <ul class="nav-links">
             <li>
-                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('admin.dasbor') }}" class="{{ request()->routeIs('admin.dasbor') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
+                    <span>Dasbor</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.members.index') }}" class="{{ request()->routeIs('admin.members.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.anggota.index') }}" class="{{ request()->routeIs('admin.anggota.*') ? 'active' : '' }}">
                     <i class="fas fa-users"></i>
-                    <span>Members</span>
+                    <span>Anggota</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.books.index') }}" class="{{ request()->routeIs('admin.books.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.buku.index') }}" class="{{ request()->routeIs('admin.buku.*') ? 'active' : '' }}">
                     <i class="fas fa-book"></i>
-                    <span>Books</span>
+                    <span>Buku</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.kategori.index') }}" class="{{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                     <i class="fas fa-tags"></i>
-                    <span>Categories</span>
+                    <span>Kategori</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.publishers.index') }}" class="{{ request()->routeIs('admin.publishers.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.penerbit.index') }}" class="{{ request()->routeIs('admin.penerbit.*') ? 'active' : '' }}">
                     <i class="fas fa-building"></i>
-                    <span>Publishers</span>
+                    <span>Penerbit</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.locations.index') }}" class="{{ request()->routeIs('admin.locations.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.lokasi.index') }}" class="{{ request()->routeIs('admin.lokasi.*') ? 'active' : '' }}">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>Locations</span>
+                    <span>Lokasi</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.peminjaman.index') }}" class="{{ request()->routeIs('admin.peminjaman.index') ? 'active' : '' }}">
                     <i class="fas fa-exchange-alt"></i>
-                    <span>Borrowings</span>
+                    <span>Peminjaman</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.sirkulasi.index') }}" class="{{ request()->routeIs('admin.sirkulasi.*') ? 'active' : '' }}">
+                    <i class="fas fa-bolt"></i>
+                    <span>Sirkulasi Kilat</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.reservasi.index') }}" class="{{ request()->routeIs('admin.reservasi.*') ? 'active' : '' }}">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Reservasi</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.peminjaman.history') }}" class="{{ request()->routeIs('admin.peminjaman.history') ? 'active' : '' }}">
                     <i class="fas fa-history"></i>
-                    <span>History</span>
+                    <span>Riwayat</span>
                 </a>
             </li>
         </ul>
@@ -74,7 +86,7 @@
     <div class="main-content">
         <!-- Header -->
         <div class="header">
-            <h1>@yield('title', 'Dashboard')</h1>
+            <h1>@yield('title', 'Dasbor')</h1>
             <div class="user-dropdown">
                 <div class="dropdown">
                     <button class="dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
@@ -82,13 +94,13 @@
                         {{ Auth::user()->name }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.dasbor') }}">Dasbor</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="dropdown-item">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    <i class="fas fa-sign-out-alt me-2"></i>Keluar
                                 </button>
                             </form>
                         </li>
@@ -128,6 +140,28 @@
         </div>
     </div>
 
+    <!-- QRCode Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize QRCodes on load
+        document.addEventListener("DOMContentLoaded", function() {
+            var qrcodes = document.querySelectorAll('.qrcode');
+            qrcodes.forEach(function(el) {
+                var value = el.getAttribute('data-value');
+                if (value) {
+                    new QRCode(el, {
+                        text: value,
+                        width: el.getAttribute('data-width') || 64,
+                        height: el.getAttribute('data-height') || 64,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }
+            });
+        });
+    </script>
+    @stack('scripts')
 </body>
 </html>

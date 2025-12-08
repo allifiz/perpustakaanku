@@ -22,25 +22,25 @@
                     <ul class="navbar-nav flex-row me-3">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
-                                <i class="fas fa-home me-1"></i>Home
+                                <i class="fas fa-home me-1"></i>Beranda
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('catalog.*') ? 'active' : '' }}" href="{{ route('catalog.index') }}">
-                                <i class="fas fa-book-open me-1"></i>Catalog
+                                <i class="fas fa-book-open me-1"></i>Katalog
                             </a>
                         </li>
                         @auth
                             @if(auth()->user()->isAdmin())
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                                        <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                                    <a class="nav-link" href="{{ route('admin.dasbor') }}">
+                                        <i class="fas fa-tachometer-alt me-1"></i>Dasbor
                                     </a>
                                 </li>
                             @else
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('member.dashboard') }}">
-                                        <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                                        <i class="fas fa-tachometer-alt me-1"></i>Dasbor
                                     </a>
                                 </li>
                             @endif
@@ -57,10 +57,10 @@
                             </form>
                         @else
                             <a href="{{ route('login') }}" class="btn btn-login">
-                                <i class="fas fa-sign-in-alt me-1"></i>Login
+                                <i class="fas fa-sign-in-alt me-1"></i>Masuk
                             </a>
                             <a href="{{ route('register') }}" class="btn btn-register">
-                                <i class="fas fa-user-plus me-1"></i>Register
+                                <i class="fas fa-user-plus me-1"></i>Daftar
                             </a>
                         @endauth
                     </div>
@@ -85,7 +85,7 @@
                 <div class="hero-buttons">
                     @auth
                         @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="hero-btn btn-hero-primary">
+                            <a href="{{ route('admin.dasbor') }}" class="hero-btn btn-hero-primary">
                                 <i class="fas fa-tachometer-alt me-2"></i>Dashboard Admin
                             </a>
                         @else
@@ -259,7 +259,7 @@
             <div class="text-center mt-4">
                 @auth
                     @if(!auth()->user()->isAdmin())
-                        <a href="{{ route('member.borrowings.create') }}" class="btn btn-primary" style="border-radius: 30px; padding: 12px 30px; font-weight: 600;">
+                        <a href="{{ route('member.peminjaman.create') }}" class="btn btn-primary" style="border-radius: 30px; padding: 12px 30px; font-weight: 600;">
                             <i class="fas fa-plus me-2"></i>Lihat Semua Buku
                         </a>
                     @endif

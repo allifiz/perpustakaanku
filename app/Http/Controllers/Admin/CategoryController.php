@@ -33,8 +33,8 @@ class CategoryController extends Controller
         $validated['is_active'] = $request->has('is_active');
         Category::create($validated);
 
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Category created successfully.');
+        return redirect()->route('admin.kategori.index')
+            ->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function edit(Category $category)
@@ -56,19 +56,19 @@ class CategoryController extends Controller
         $validated['is_active'] = $request->has('is_active');
         $category->update($validated);
 
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Category updated successfully.');
+        return redirect()->route('admin.kategori.index')
+            ->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy(Category $category)
     {
         if ($category->books()->count() > 0) {
             return redirect()->back()
-                ->with('error', 'Cannot delete category with existing books.');
+                ->with('error', 'Tidak dapat menghapus kategori yang memiliki buku.');
         }
 
         $category->delete();
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Category deleted successfully.');
+        return redirect()->route('admin.kategori.index')
+            ->with('success', 'Kategori berhasil dihapus.');
     }
 }

@@ -18,7 +18,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('member.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('member.borrowings.index') }}">Borrowings</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('member.peminjaman.index') }}">Peminjaman</a></li>
                 <li class="breadcrumb-item active">Borrow New</li>
             </ol>
         </nav>
@@ -43,7 +43,7 @@
 
                     {{-- Search (GET) --}}
                     <div class="mb-3 d-flex align-items-center gap-2">
-                        <form method="GET" action="{{ route('member.borrowings.create') }}" class="d-flex w-100" role="search">
+                        <form method="GET" action="{{ route('member.peminjaman.create') }}" class="d-flex w-100" role="search">
                             <input name="q" value="{{ $q ?? '' }}" class="form-control me-2" placeholder="Cari judul / penulis...">
                             <button class="btn btn-outline-secondary" type="submit">
                                 <i class="fas fa-search"></i>
@@ -82,7 +82,7 @@
                                         </div>
 
                                         {{-- Submit per kartu --}}
-                                        <form method="POST" action="{{ route('member.borrowings.store') }}" class="mt-auto">
+                                        <form method="POST" action="{{ route('member.peminjaman.store') }}" class="mt-auto">
                                             @csrf
                                             <input type="hidden" name="book_id" value="{{ $book->id }}">
                                             <button type="submit"
@@ -116,7 +116,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('member.borrowings.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('member.peminjaman.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
                     </div>

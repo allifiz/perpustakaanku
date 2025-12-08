@@ -7,8 +7,8 @@
     <div class="col-12">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.publishers.index') }}">Publishers</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dasbor') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.penerbit.index') }}">Publishers</a></li>
                 <li class="breadcrumb-item active">Add New</li>
             </ol>
         </nav>
@@ -20,7 +20,7 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('admin.publishers.store') }}" method="POST">
+                <form action="{{ route('admin.penerbit.store') }}" method="POST">
                     @csrf
                     
                     <div class="mb-3">
@@ -102,7 +102,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Save Publisher
                         </button>
-                        <a href="{{ route('admin.publishers.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.penerbit.index') }}" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Cancel
                         </a>
                     </div>

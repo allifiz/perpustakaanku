@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Publishers')
+@section('title', 'Kelola Penerbit')
 
 @section('content')
 <div class="row mb-4">
@@ -9,7 +9,7 @@
         <p class="text-muted">Manage book publishers and imprints</p>
     </div>
     <div class="col-md-6 text-end">
-        <a href="{{ route('admin.publishers.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.penerbit.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Add New Publisher
         </a>
     </div>
@@ -80,7 +80,7 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('admin.publishers.edit', $publisher) }}" 
+                                <a href="{{ route('admin.penerbit.edit', $publisher) }}" 
                                    class="btn btn-outline-primary" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -90,7 +90,7 @@
                                 </button>
                             </div>
                             <form id="delete-form-{{ $publisher->id }}" 
-                                  action="{{ route('admin.publishers.destroy', $publisher) }}" 
+                                  action="{{ route('admin.penerbit.destroy', $publisher) }}" 
                                   method="POST" style="display: none;">
                                 @csrf
                                 @method('DELETE')
@@ -102,7 +102,7 @@
                         <td colspan="6" class="text-center py-4">
                             <i class="fas fa-building fa-3x text-muted mb-3"></i>
                             <p class="text-muted">No publishers found.</p>
-                            <a href="{{ route('admin.publishers.create') }}" class="btn btn-primary">
+                            <a href="{{ route('admin.penerbit.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Add First Publisher
                             </a>
                         </td>
@@ -122,7 +122,7 @@
 
 <script>
 function deletePublisher(id) {
-    if (confirm('Are you sure you want to delete this publisher? This cannot be undone.')) {
+    if (confirm('Apakah Anda yakin ingin menghapus penerbit ini? Tindakan tidak dapat dibatalkan.')) {
         document.getElementById('delete-form-' + id).submit();
     }
 }

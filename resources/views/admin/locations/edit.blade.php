@@ -7,8 +7,8 @@
     <div class="col-12">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.locations.index') }}">Locations</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.dasbor') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.lokasi.index') }}">Locations</a></li>
                 <li class="breadcrumb-item active">Edit</li>
             </ol>
         </nav>
@@ -20,7 +20,7 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('admin.locations.update', $location) }}" method="POST">
+                <form action="{{ route('admin.lokasi.update', $location) }}" method="POST">
                     @csrf
                     @method('PUT')
                     
@@ -99,7 +99,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Update Location
                         </button>
-                        <a href="{{ route('admin.locations.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.lokasi.index') }}" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Cancel
                         </a>
                     </div>

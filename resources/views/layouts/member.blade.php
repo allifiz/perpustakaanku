@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Member - Digital Library')</title>
+    <title>@yield('title', 'Anggota - Perpustakaan Digital')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -321,7 +321,7 @@
     <nav class="navbar navbar-expand-lg navbar-modern sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ route('member.dashboard') }}">
-                <i class="fas fa-book-reader me-2"></i>Digital Library
+                <i class="fas fa-book-reader me-2"></i>Perpustakaan Digital
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -331,48 +331,56 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('member.dashboard') ? 'active' : '' }}" 
                            href="{{ route('member.dashboard') }}">
-                            <i class="fas fa-home"></i>Dashboard
+                            <i class="fas fa-home"></i>Beranda
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('catalog.*') ? 'active' : '' }}" 
                            href="{{ route('catalog.index') }}">
-                            <i class="fas fa-book"></i>Browse Books
+                            <i class="fas fa-book"></i>Cari Buku
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('member.borrowings.index') ? 'active' : '' }}" 
-                           href="{{ route('member.borrowings.index') }}">
-                            <i class="fas fa-bookmark"></i>My Books
+                        <a class="nav-link {{ request()->routeIs('member.peminjaman.index') ? 'active' : '' }}" 
+                           href="{{ route('member.peminjaman.index') }}">
+                            <i class="fas fa-bookmark"></i>Buku Saya
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('member.borrowings.history') ? 'active' : '' }}" 
-                           href="{{ route('member.borrowings.history') }}">
-                            <i class="fas fa-history"></i>History
+                        <a class="nav-link {{ request()->routeIs('member.peminjaman.history') ? 'active' : '' }}" 
+                           href="{{ route('member.peminjaman.history') }}">
+                            <i class="fas fa-history"></i>Riwayat
                         </a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle user-dropdown" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user-circle me-2"></i>{{ Auth::user()->name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="border-radius: 12px;">
                             <li><a class="dropdown-item" href="{{ route('member.profile.show') }}">
-                                <i class="fas fa-user me-2 text-primary"></i>My Profile
+                                <i class="fas fa-user me-2 text-primary"></i>Profil Saya
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        <i class="fas fa-sign-out-alt me-2"></i>Keluar
                                     </button>
                                 </form>
                             </li>
                         </ul>
                     </li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link user-dropdown" href="{{ route('login') }}">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>
@@ -418,19 +426,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <h5 class="fw-bold text-primary">Digital Library</h5>
-                    <p class="text-muted small">Your gateway to knowledge and learning</p>
+                    <h5 class="fw-bold text-primary">Perpustakaan Digital</h5>
+                    <p class="text-muted small">Gerbang Anda menuju pengetahuan dan pembelajaran</p>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <h6 class="fw-bold">Quick Links</h6>
+                    <h6 class="fw-bold">Tautan Cepat</h6>
                     <ul class="list-unstyled small">
-                        <li><a href="{{ route('catalog.index') }}" class="text-decoration-none">Browse Books</a></li>
-                        <li><a href="{{ route('member.borrowings.index') }}" class="text-decoration-none">My Books</a></li>
-                        <li><a href="{{ route('member.profile.show') }}" class="text-decoration-none">Profile</a></li>
+                        <li><a href="{{ route('catalog.index') }}" class="text-decoration-none">Cari Buku</a></li>
+                        <li><a href="{{ route('member.peminjaman.index') }}" class="text-decoration-none">Buku Saya</a></li>
+                        <li><a href="{{ route('member.profile.show') }}" class="text-decoration-none">Profil</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <h6 class="fw-bold">Connect</h6>
+                    <h6 class="fw-bold">Hubungi Kami</h6>
                     <div class="social-links">
                         <a href="#" class="text-decoration-none me-3"><i class="fab fa-facebook fa-lg"></i></a>
                         <a href="#" class="text-decoration-none me-3"><i class="fab fa-twitter fa-lg"></i></a>
@@ -440,7 +448,7 @@
             </div>
             <hr>
             <p class="text-muted small mb-0">
-                &copy; {{ date('Y') }} Digital Library. All rights reserved.
+                &copy; {{ date('Y') }} Perpustakaan Digital. Hak cipta dilindungi.
             </p>
         </div>
     </footer>
