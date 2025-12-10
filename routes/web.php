@@ -17,10 +17,10 @@ use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\DB;
 
 // Rute Autentikasi
-Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/masuk', [LoginController::class, 'showLoginForm'])->name('login')->middleware(['guest', 'prevent-back-history']);
 Route::post('/masuk', [LoginController::class, 'login']);
 Route::post('/keluar', [LoginController::class, 'logout'])->name('logout');
-Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::get('/daftar', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware(['guest', 'prevent-back-history']);
 Route::post('/daftar', [RegisterController::class, 'register']);
 
 // Katalog Publik (OPAC)
@@ -31,7 +31,7 @@ Route::post('/katalog/{book}/reservasi', [CatalogController::class, 'reserve'])-
 
 // Rute Admin
 // routes/web.php
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin', 'prevent-back-history'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dasbor', function () {
         $totalBooks = \App\Models\Book::count();
         $totalMembers = \App\Models\User::where('role', 'member')->count();
@@ -112,7 +112,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 // Rute Anggota
-Route::middleware(['auth', 'member'])->prefix('anggota')->name('member.')->group(function () {
+Route::middleware(['auth', 'member', 'prevent-back-history'])->prefix('anggota')->name('member.')->group(function () {
     Route::get('/dasbor', function () {
         return view('member.dashboard');
     })->name('dashboard');

@@ -12,12 +12,21 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->redirectUsersTo(function () {
+             $user = \Illuminate\Support\Facades\Auth::user();
+             if ($user && $user->isAdmin()) {
+                 return route('admin.dasbor');
+             }
+             return route('member.dashboard');
+        });
+
         // Register middleware aliases
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'member' => \App\Http\Middleware\MemberMiddleware::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
             'track'    => \App\Http\Middleware\TrackDailyVisit::class,
+            'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         ]);
         // << tambahkan ini agar TrackDailyVisit aktif di semua route 'web'
     })

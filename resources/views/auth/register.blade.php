@@ -67,7 +67,7 @@
 
             <div class="form-group">
                 <label for="phone" class="form-label">Nomor Telepon</label>
-                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" 
+                <input id="phone" type="number" class="form-control @error('phone') is-invalid @enderror" 
                        name="phone" value="{{ old('phone') }}" required 
                        placeholder="Masukkan nomor telepon">
                 @error('phone')

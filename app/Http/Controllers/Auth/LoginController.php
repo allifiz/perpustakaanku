@@ -22,12 +22,12 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            // Gunakan pengecekan langsung tanpa method isAdmin()
+            // Gunakan pengecekan langsung
             $user = Auth::user();
-            if ($user && $user->role === 'admin') {
+            if ($user && $user->isAdmin()) {
                 return redirect()->intended(route('admin.dasbor'));
             } else {
                 return redirect()->intended(route('member.dashboard'));
