@@ -101,21 +101,51 @@ public function index(Request $request)
         return redirect()->back()->with('success', 'Permintaan peminjaman berhasil disetujui.');
     }
 
-    public function returnBook(Borrowing $borrowing)
+    public function returnBook(Request $request, Borrowing $borrowing)
     {
         if ($borrowing->status !== 'approved') {
             return redirect()->back()->with('error', 'Buku tidak dapat dikembalikan.');
         }
 
-        $borrowing->update([
+        // Logic Check Overdue & Denda
+        $isOverdue = $borrowing->isOverdue();
+        
+        // Jika terlambat & belum dikonfirmasi bayar denda
+        if ($isOverdue && !$request->has('confirm_return')) {
+            $daysOverdue = $borrowing->days_overdue;
+            $finePerDay = 1000; // Bisa dibuat dinamis / ambil dari config
+            $fineAmount = $daysOverdue * $finePerDay;
+
+            return view('admin.peminjaman.return_confirm', compact(
+                'borrowing', 'daysOverdue', 'finePerDay', 'fineAmount'
+            ));
+        }
+
+        // Simpan Data Pengembalian
+        $data = [
             'status' => 'returned',
             'return_date' => now(),
-        ]);
+            'returned_to' => auth()->id(), // Admin yang memproses
+        ];
+
+        // Jika ada denda yang dibayar
+        if ($request->has('confirm_return')) {
+            $data['fine_amount'] = $request->input('fine_amount', 0);
+            $data['fine_paid'] = true;
+            $data['notes'] = $request->input('notes');
+        }
+
+        $borrowing->update($data);
 
         $borrowing->book->increment('available_copies');
 
-        return redirect()->back()->with('success', 'Buku berhasil dikembalikan.');
-    }   
+        $message = 'Buku berhasil dikembalikan.';
+        if(isset($data['fine_amount']) && $data['fine_amount'] > 0) {
+            $message .= ' Pembayaran denda sebesar Rp ' . number_format($data['fine_amount'], 0, ',', '.') . ' telah dicatat.';
+        }
+
+        return redirect()->route('admin.peminjaman.index')->with('success', $message);
+    }
 
     public function destroy(Borrowing $borrowing)
     {
