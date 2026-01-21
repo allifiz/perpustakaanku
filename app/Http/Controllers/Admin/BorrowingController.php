@@ -217,7 +217,7 @@ public function exportPdf(Request $request)
         'borrowings' => $borrowings,
         'from'       => $request->input('from'),
         'to'         => $request->input('to'),
-    ])->setPaper('A4', 'landscape');
+    ])->setPaper('A4', 'portrait');
 
     return $pdf->download('borrowings_'.now()->format('Y-m-d_His').'.pdf');
 }
